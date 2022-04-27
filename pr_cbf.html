@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="./images/icon.png">
+<link rel="stylesheet" href="main.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<!--- <title>Safety against uncertain obstacles using probabilistic control barrier function</title> --->
+<title>Prasanth Kotaru</title>
+<!-- MathJax -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async>
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+	  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<!-- End MathJax -->
+</head>
+<body>
+<div id="main-container">
+<div id="header-container">
+<div id="header">
+<div id="header-icon-text-container">
+<div id="header-icon-container" >
+<a href="profile.html"><img src="./media/profile.jpg" alt="" style="width: 100%; height: 100%; position: center; padding:0px; margin: 0px;"></a>
+</div>
+<div id="header-text-container">
+<a href="profile.html">Prasanth Kotaru</a>
+</div>
+</div>
+<div id="main">
+<button class="openbtn" onclick="openNav()">☰</button>
+</div>
+</div>
+</div>
+<div id="layout">
+<div id="layout-menu-container">
+<div id="layout-menu">
+<div class="menu-item"><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a></div>
+<div class="menu-item"><a href="profile.html">About</a></div>
+<div class="menu-item"><a href="publications.html">Publications</a></div>
+<div class="menu-item"><a href="research.html">Research</a></div>
+<div class="menu-item"><a href="projects.html">Projects</a></div>
+<div class="menu-item"><a href="videos.html">Videos</a></div>
+<div class="menu-item"><a href="gallery.html">Gallery</a></div>
+<div class="menu-category"></div>
+<div class="menu-item"><a href="https://github.com/vkotaru" target="blank">GitHub</a></div>
+<div class="menu-item"><a href="https://scholar.google.com/citations?user=ZCumxcUAAAAJ&hl=en" target="blank">Google&nbsp;Scholar</a></div>
+</div> <!-- <div id="layout-menu"> -->
+</div> <!-- <div id="layout-menu-container"> -->
+<div id="layout-content-container">
+<div id="layout-content">
+<div id="toptitle">
+<h1>Safety against uncertain obstacles using probabilistic control barrier function</h1>
+</div>
+<p>Chinmay Maheshwari, Jichan Chung, Prasanth Kotaru. EE227BT - Convex Optimization, Fall 2019. Presentation <a href="pdf/Project_Presentation_EE_227.pdf" target=&ldquo;blank&rdquo;>pdf</a>  </p>
+<div id="text-img-container"><div id="img-container">
+<a href="./pr_cbf.html"><img src="./media/prcbf_profile.jpg" alt="PrCBF_Example" width="280px" /></a></div>
+<div id="text-container"><p>A given dynamical system is said to be safe, if the system states belong to a safe-set, i.e., \(x\in \mathcal{C}, \forall t\geq 0\) [1]. The safety set C is defined as a
+super-level set of a differential function \(h(x) : \mathbb{R}^n\rightarrow \mathbb{R},\quad \mathcal{C}=\{x: h(x)\geq 0\}\). Typically, \(h(x)\) is a function of system
+state \(x\) and the environment, for instance, \(h(x) = dist(x, x_{obstacle} )−\varepsilon\). </p>
+</div></div>
+<p>The objective is to ensure that the state \(x\) belongs to the safety-set with high-probablity.
+This is achieved using the following optimization formulation,</p>
+<p style="text-align:center">
+\[
+\begin{align}
+\min_{(u,\delta)\in\mathcal{U}\times\mathbb{R}} &amp; \quad  u^\top u + \delta^2 \label{eq:prcbf}  \\ 
+\text{subject to} &amp; \quad L_f V(x) + L_g V(x) u + \gamma V(x) - \delta \leq 0, \\
+&amp; \quad Pr(L_fh(x) + L_gh(x)u + \lambda h(x) \geq 0)\geq \eta \quad \text{(PrCBF)}
+\end{align}
+\]
+</p><p>For a linear barrier function, \(h = a^Tx + b\), where \(a\sim \mathcal{N}(\bar{a}, \Sigma)\) is a system independent normally distributed parameter. PrCBF for this system is computed as follows.</p>
+<p style="text-align:center">
+\[
+ \begin{align*}
+&amp;\dot{h}+\lambda h \geq 0,\\
+&amp;\nabla h^\top \dot{x} +\lambda h \geq 0,\\
+&amp;a^\top(f(x)+g(x)u)+\lambda (a^\top x+ b) \geq 0,\\
+&amp;\underbrace{a^\top f(x)}_{L_fh} +\underbrace{ a^\top g(x)}_{L_gh}u + \lambda(a^\top x+ b)\geq 0,\\
+&amp;a^\top \underbrace{ \big(- (f(x) + g(x)u +\lambda x) \big)}_{y} \leq  \underbrace{\lambda b}_{\tilde{b}}. 
+\end{align*} 
+\]
+</p><p>For this particular problem, PrCBF is linear in the uncertain parameter \(a\). Therefore, </p>
+<p style="text-align:center">
+\[
+	\begin{gather*}
+	a^\top x-b\sim \mathcal{N}(\bar{a}^\top x-b,x^\top \Sigma x)\\
+	\textbf{Prob}(a^\top x\leq b) = \Phi\Bigg( \frac{b-\bar{a}^\top x}{\sqrt{x^\top \Sigma x}}\Bigg)\\
+	\textbf{Prob}(a^\top x\leq b)\geq \eta \iff b-\bar{a}^\top x\geq \Phi^{-1}(\eta)\|\Sigma^{1/2}x\|_2\\
+  b-\bar{a}^\top y \geq  \Phi^{-1}(\eta)\|\Sigma^{1/2}y\|_2 \label{eq:socp0}
+	\end{gather*}
+\]
+</p><p>where \(y=- (f(x) + g(x)u +\lambda x)\). The original optimization problem is thus reformulated as,</p>
+<p style="text-align:center">
+\[
+\begin{align}
+	\min&amp;\quad u^Tu + \delta^2\\
+	\text{s.t.}&amp;&nbsp; L_f V(x) + L_g V(x) u + \gamma V(x) - \delta \leq 0\\
+ &amp;&nbsp;b-\bar{a}^\top y \geq  \Phi^{-1}(\eta)\|\Sigma^{1/2}y\|_2
+\end{align} 
+\]
+</p><h3>Linear System with Linear Barrier Chance Constraint </h3>
+<div id="text-img-container"><div id="img-container">
+<a href="./pr_cbf.html"><img src="./media/prcbf_example.png" alt="PrCBF_Example" width="280px" /></a></div>
+<div id="text-container"><p>Consider a linear system \(\dot{x} = Ax +Bu\). The optimization formulation for this system (CLF-PrCBF-SOCP) as, </p>
+<p style="text-align:center">
+\[
+\begin{gather}
+\begin{matrix}
+{\min}_{y,\delta} &amp; (y_0-y)^\top (y_0-y)+ {\delta^2}\\\text{s.t}&amp;   -2x^\top Py-\delta \leq -(2x^\top Py_0+ 2 x^\top PAx + \gamma x^\top Px )\\
+&amp;\tilde{b}{-}\bar{a}^\top y\geq \Phi^{-1}(\eta)\|\Sigma^{1/2}y\|_2.
+\end{matrix}
+\end{gather}
+\]
+</p><p>where \(y=\underbrace{-(A+\lambda I)x}_{y_0}-Bu\), \(\tilde{b}=\lambda b\). </p>
+</div></div>
+<h3>Toy Example</h3>
+<p>Linear system with linear barrier chance constraint</p>
+<p style="text-align:center">
+\[
+\begin{gather}
+A = \begin{bmatrix}0 &amp; 0 \\ 0 &amp; 0 \end{bmatrix},&nbsp;B = \begin{bmatrix}1 &amp; 0 \\ 0 &amp; 1 \end{bmatrix},&nbsp;h = a^Tx + b,&nbsp; a\in \mathcal{N}\Bigg(\begin{bmatrix} -1\\ 0\end{bmatrix}, \begin{bmatrix}
+\Sigma &amp; 0 \\ 0 &amp; \Sigma
+\end{bmatrix}  \Bigg)
+\end{gather}
+\]
+</p><div id="text-img-container"><div id="img-container">
+<img src="./media/prcbf_result.png" alt="PrCBF_Result" width="50%" /></div>
+<div id="text-container"></div></div>
+<p>Simulations for various \(\eta\) and \(\Sigma\), the CLF-PrCBF formulation is run for
+various probabilities \(η \in \{0.5, 0.75, 0.9, 0.99\}\) and different \(\Sigma \in \{0.1, 0.5\}\). As
+shown in the Figure, the results are expected. Increasing \(\eta\) ensures that the
+probability for safety is higher and thus the system stabilizes farther from the
+barrier (more conservative solution). Similarly for higher \(\Sigma\) the system stabilizes
+farther from the barrier.</p>
+<h3>References</h3>
+<p>1. Ames, Aaron D., Samuel Coogan, Magnus Egerstedt, Gennaro Notomista, Koushil Sreenath, and Paulo Tabuada. &ldquo;Control barrier functions: Theory and applications.&rdquo; In 2019 18th European control conference (ECC), pp. 3420-3431. IEEE, 2019.</p>
+<h2></h2>
+</div> <!-- <div id="layout-content"> -->
+<div id="footer-container">
+<div id="footer">
+<div id="footer-text">
+Last edited  on April 26<sup>th</sup> 2022  08:07PM (Time Zone: PDT). </br>
+Powered by <a href="https://github.com/szl2/jemdoc-new-design" target="blank">jemdoc + new design</a>.
+</div> <!-- <div id="footer-text"> -->
+</div> <!-- <div id="footer"> -->
+</div> <!-- <div id="footer-container"> -->
+</div> <!-- <div id="layout-content-container"> -->
+</div> <!--- <div id="layout"> --->
+</div> <!--- <div id="main-container"> --->
+<script>
+function openNav() {
+    if (window.innerWidth <= 1200) {
+        document.getElementById("layout-menu").style.width = "280px";
+        document.getElementById("layout-content-container").style.marginLeft = "280.8px";
+        document.getElementById("layout-content-container").style.position = "fixed";
+    }
+}
+function closeNav() {
+    if (window.innerWidth <= 1200) {
+        document.getElementById("layout-menu").style.width = "0";
+        document.getElementById("layout-content-container").style.position = "static";
+        document.getElementById("layout-content-container").style.marginLeft = "0px";
+        setInterval(
+            function(){ location.reload() },
+            500
+        );
+    }
+}
+</script>
+</body>
+</html>
