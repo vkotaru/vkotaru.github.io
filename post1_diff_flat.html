@@ -118,7 +118,7 @@ The system equations for a double integrator can be written as,</p>
 </p><p>For this system, \(x\) is a flat output, i.e., if we know \(x\) as a function of time, 
 then its derivative would give us the \(v\), and the derivative of \(v\) is \(u\).
 Therefore, knowing \(x\), \(\dot x\), \(\ddot x\), we can have the system states and inputs.
-Note <u>without any integration</u> from earlier; if you know \(u\) as a function of time, 
+Note <u>without any integration</u> from earlier; if we know \(u\) as a function of time, 
 integrating and double integrating would give the states and requires knowing the initial conditions.
 Keep in mind it is <b>differentially flat</b> and <b>not integrally flat</b> ;).
 A double integrator system is differentially flat system with \(x\) as the flat output.
@@ -143,10 +143,10 @@ and solving for \(x_1, x_2, x_3\) gives the system states and inputs (see [2] fo
     u = &amp; \frac{y^{(3)} + {\ddot y }^2+ \ddot y +\dot y + x_1 + 2x_1\ddot y+ x_1^2 }{1+ \ddot y + x_1}
   \end{align}
 \]
-</p><p>These equations seems way more complicated the original system equations in (4)-(6), why would I want to use them?
-Well, keep in mind, equations (7)-(10) are just expressions for the states and inputs in terms of the flat output \(y\) and its derivatives. 
+</p><p>These equations seem way more complicated than the original system equations in (4)-(6); why would we want to use them?
+Well, keep in mind equations (7)-(10) are just expressions for the states and inputs in terms of the flat output \(y\) and its derivatives. 
 i.e., the whole system (4)-(6) behavior can be expressed using a single function \(y(t)\). </p>
-<p>How do you make use of this information? You can plan for a desired system behavior by finding a suitable \(y(t)\) with the 
+<p>How do we make use of this information? We can plan for a desired system behavior by finding a suitable \(y(t)\) with the 
 desired state conditions. For instance, find a \(t\) parameterized curve as,  </p>
 <p style="text-align:center">
 \[
@@ -154,18 +154,18 @@ desired state conditions. For instance, find a \(t\) parameterized curve as,  </
   y = a_0 + a_1 t + a_2 t^ 2 + &hellip; + a_p t^p.
  \end{align} 
 \]
-</p><p>Knowing the desired \(y(t)\), you can find the corresponding system input \(u(t)\).
-Alternatively, you can use differential flatness as an observer, i.e., by measuring \(y\) you can observe the system states and inputs.</p>
-<p><b>Caveat</b>: Planning in the flat space is not always easy. Sometimes, it might be easier to plan using the full system equations than
+</p><p>Knowing the desired \(y(t)\), we can find the corresponding system input \(u(t)\).
+Alternatively, we can use differential flatness as an observer, i.e., by measuring \(y\) we can observe the system states and inputs.</p>
+<p><b>Caveat</b>: Planning in a flat space is not always easy. Sometimes, planning using the full system equations might be easier than
 planning using the flat outputs. It all depends on how complex and nonlinear the relation between the flat outputs and the system states and inputs is,
 (7)-(10) for the above example.
-In the above example, planning in the flat-space requires a curve parameterized in \(t\) that's atleast 3 times differentiable, i.e., \(y\in \mathcal{C}^3\).
-Planning in \(y\) requires atleast a \(4^{th}\) order polynomial or using perodioc function as basis functions. 
-Going more into detail requires a separate post, (see minimum snap/jerk trajectory planning if you are interested).
+In the above example, planning in the flat space requires a curve parameterized in \(t\), that's at least three times differentiable, i.e., \(y\in \mathcal{C}^3\).
+Planning in \(y\) requires at least a \(3^{rd}\) order polynomial or use of periodic function as basis functions. 
+Going more in-depth requires a separate post (see minimum snap/jerk trajectory planning if you are interested).
 So, for systems that require higher flat-output derivatives (i.e., \(y^{(p)}\)), planning in the flat space might be difficult due to numerical 
 instabilities and/or high computational cost as it requires \(p^{th}\) order polynomial fitting.</p>
 <h3>Canonical Form</h3>
-<p>The system in (1) can be epxressed in a canonical form using the flat output \(y\) as,</p>
+<p>The system in (1) can be expressed in a canonical form using the flat output \(y\) as,</p>
 <p style="text-align:center">
 \[
 \begin{align}
@@ -183,10 +183,10 @@ instabilities and/or high computational cost as it requires \(p^{th}\) order pol
 This is <a href="https://en.wikipedia.org/wiki/Feedback_linearization" target=&ldquo;blank&rdquo;>feedback linearization</a>.</p>
 <p>For planning using the flat outputs, instead of finding a sufficiently smooth function for \(y(t)\), we can make use of the above canonical form
 to find \(\nu(t)\) with necessary initial conditions.
-Trajectory generation techniques like direct-collocation, single/multiple shooting methods 
+Trajectory generation techniques like direct collocation, single/multiple shooting methods 
 can be used on the above linear system to find \(y\) and its derivatives.</p>
-<p>I might have digressed a bit, but I hope you got the idea of how to use differential flatness for planning. 
-The two earlier examples are a bit abstract in nature, let's look at a more tangile example next, 
+<p>I might have digressed a bit, but I hope you got the idea of using differential flatness for planning. 
+The two earlier examples are a bit abstract; let's look at a more tangible example next, 
 differential flatness in quadrotors and how the states are computed from the flat variables.</p>
 <h3>References</h3>
 <ol>
@@ -195,6 +195,7 @@ differential flatness in quadrotors and how the states are computed from the fla
 <li><p>Rigatos, Gerasimos G. &ldquo;Differential flatness theory and flatness-based control.&rdquo; In Nonlinear Control and Filtering Using Differential Flatness Approaches, pp. 47-101. Springer, Cham, 2015.</p>
 </li>
 </ol>
+
 <script src="https://utteranc.es/client.js"
         repo="vkotaru/vkotaru.github.io"
         issue-term="pathname"
@@ -206,7 +207,7 @@ differential flatness in quadrotors and how the states are computed from the fla
 <div id="footer-container">
 <div id="footer">
 <div id="footer-text">
-Last edited  on January 14<sup>th</sup> 2023  01:54AM (Time Zone: PST). </br>
+Last edited  on January 17<sup>th</sup> 2023  01:07AM (Time Zone: PST). </br>
 Powered by <a href="https://github.com/szl2/jemdoc-new-design" target="blank">jemdoc + new design</a>.
 </div> <!-- <div id="footer-text"> -->
 </div> <!-- <div id="footer"> -->
