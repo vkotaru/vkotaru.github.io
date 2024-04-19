@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="main.css" type="text/css" />
 <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="font-awesome/css/all.css">
-<!--- <title>Posts</title> --->
+<!--- <title>Differential Flatness in Quadcopters</title> --->
 <title>Prasanth Kotaru</title>
 <!-- MathJax -->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async>
@@ -57,7 +57,7 @@ MathJax.Hub.Config({
 <div class="menu-item"><a href="index.html#projects">Projects</a></div>
 <div class="menu-item"><a href="index.html#contact">Contact</a></div>
 <div class="menu-category"></div>
-<div class="menu-item"><a href="posts.html" class="current">Posts</a></div>
+<div class="menu-item"><a href="posts.html">Posts</a></div>
 <div class="menu-item"><a href="videos.html">Videos</a></div>
 <div class="menu-item"><a href="gallery.html">Gallery</a></div>
 <div class="menu-category"></div>
@@ -70,19 +70,32 @@ MathJax.Hub.Config({
 <div id="layout-content-container">
 <div id="layout-content">
 <div id="toptitle">
-<h1>Posts</h1>
+<h1>Differential Flatness in Quadcopters</h1>
 </div>
-<div id="text-img-container"><div id="img-container">
-<img src="./media/diff_flat.png" alt="" width="100px" /></div>
-<div id="text-container"><p><b><a href="post1_diff_flat.html">Understanding Differential Flatness for Nonlinear Systems</a></b></p>
-<p>The words &ldquo;<i>differential</i>&rdquo; and &ldquo;<i>flatness</i>&rdquo; together might sound a bit bizarre to the ear; 
-however, they form an interesting concept in control theory. <a href="post1_diff_flat.html">[continue reading&hellip;]</a></p>
-</div></div>
-<div id="text-img-container"><div id="img-container">
-<img src="./media/diff_flat.png" alt="" width="100px" /></div>
-<div id="text-container"><p><b><a href="post2_quad_diff_flat.html">Differential Flatness in Quadcopters</a></b></p>
-<p>The words &ldquo;<i>differential</i>&rdquo; and &ldquo;<i>flatness</i>&rdquo; together might sound a bit bizarre to the ear; 
-however, they form an interesting concept in control theory. <a href="post2_quad_diff_flat.html">[continue reading&hellip;]</a></p>
+<p>Previous post explains <a href="post1_diff_flat.html">Differential Flatness for Nonlinear Systems</a>.
+In this post, let's look at differential flatness in quadcopters. </p>
+<p>The earliest references to differential flatness I came across are by Michel Fliess, Jean Lévine, Philippe Martin, Pierre Rouchon.</p>
+<p><details>
+<summary>Differential Flatness References</summary>
+<ul>
+<li>Fliess, Michel, Jean Lévine, Philippe Martin, and Pierre Rouchon. "On differentially flat nonlinear systems." In Nonlinear Control Systems Design 1992, pp. 159-163. Pergamon, 1993.</li>
+<li>Pomet, J. B., C. H. Moog, and E. Aranda. "A non-exact Brunovsky form and dynamic feedback linearization." In [1992] Proceedings of the 31st IEEE Conference on Decision and Control, pp. 2012-2017. IEEE, 1992.</li>
+<li>Fliess, Michel, Jean Lévine, Philippe Martin, and Pierre Rouchon. "Flatness and defect of non-linear systems: introductory theory and examples." International journal of control 61, no. 6 (1995): 1327-1361.</li>
+<li>van Nieuwstadt, Michiel, Muruhan Rathinam, and Richard M. Murray. "Differential flatness and absolute equivalence." In Proceedings of 1994 33rd IEEE Conference on Decision and Control, vol. 1, pp. 326-332. IEEE, 1994.</li>
+<li>Murray, Richard M., Muruhan Rathinam, and Willem Sluis. "Differential flatness of mechanical control systems: A catalog of prototype systems." In ASME international mechanical engineering congress and exposition. 1995.</li>
+</ul>
+</details></p>
+<p>I might have digressed a bit, but I hope you got the idea of using differential flatness for planning. 
+The two earlier examples are a bit abstract; let's look at a more tangible example next, 
+differential flatness in quadrotors and how the states are computed from the flat variables.</p>
+
+<script src="https://utteranc.es/client.js"
+        repo="vkotaru/vkotaru.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
 </div> <!-- <div id="layout-content"> -->
 <div id="footer-container">
 <div id="footer">
