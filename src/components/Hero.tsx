@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function Hero()
 {
@@ -74,7 +75,7 @@ export default function Hero()
                     Ph.D., Mechanical Engineering, University of California, Berkeley, CA, 2022
                   </p>
                   <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">
-                    <strong>Dissertation:</strong> Dynamics and Control for Collaborative Aerial Manipulation
+                    <strong>Dissertation:</strong> <Link href="/dissertation" className="text-primary hover:underline">Dynamics and Control for Collaborative Aerial Manipulation</Link>
                   </p>
                 </div>
 
