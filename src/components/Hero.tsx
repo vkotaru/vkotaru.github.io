@@ -42,7 +42,7 @@ export default function Hero()
                 </svg>
               </a>
               <a
-                href="https://scholar.google.com/citations?user=YOUR_ID"
+                href="https://scholar.google.com/citations?user=ZCumxcUAAAAJ&hl=en&oi=ao"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 bg-white dark:bg-slate-800 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all"
@@ -53,7 +53,7 @@ export default function Hero()
                 </svg>
               </a>
               <a
-                href="https://linkedin.com/in/YOUR_ID"
+                href="https://www.linkedin.com/in/prasanthkotaru/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-3 bg-white dark:bg-slate-800 rounded-full shadow-md hover:shadow-lg hover:scale-110 transition-all"

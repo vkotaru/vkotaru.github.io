@@ -47,7 +47,7 @@ export default function Contact()
                   </svg>
                 </a>
                 <a
-                  href="https://scholar.google.com/citations?user=ZCumxcUAAAAJ&hl=en"
+                  href="https://scholar.google.com/citations?user=ZCumxcUAAAAJ&hl=en&oi=ao"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
