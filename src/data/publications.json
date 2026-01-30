@@ -1,18 +1,33 @@
 {
   "publications": [
     {
+      "id": "phd-dissertation-2022",
+      "title": "Dynamics and Control for Collaborative Aerial Manipulation",
+      "authors": [
+        "Prasanth Kotaru"
+      ],
+      "venue": "PhD Dissertation",
+      "year": 2022,
+      "type": "dissertation",
+      "image": "/media/tetheredCatenaryDrone.gif",
+      "links": {
+        "pdf": "https://hybrid-robotics.berkeley.edu/publications/Dissertation2022_Prasanth_Kotaru.pdf",
+        "video": "https://www.youtube.com/watch?v=Bo1-U9dzL-M"
+      }
+    },
+    {
       "id": "tethered-power-2023",
       "title": "Tethered Power for a Series of Quadcopters: Analysis and Applications",
       "authors": [
         "Karan P. Jain*",
-        "Prasanth Kotaru*",
+        "Prasanth Kotaru",
         "Massimiliano de Sa",
         "Koushil Sreenath",
         "Mark W. Mueller"
       ],
       "venue": "ICRA 2023 (under review)",
       "year": 2023,
-      "type": "preprint",
+      "type": "arxiv",
       "image": "/media/tetheredCatenaryDrone.gif",
       "links": {
         "pdf": "https://arxiv.org/pdf/2203.08180.pdf",

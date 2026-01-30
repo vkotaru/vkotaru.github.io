@@ -10,7 +10,7 @@ type Publication = {
   authors: string[]
   venue: string
   year: number
-  type: 'journal' | 'conference' | 'preprint'
+  type: 'journal' | 'conference' | 'arxiv' | 'dissertation'
   image: string
   links: {
     pdf?: string
@@ -42,7 +42,8 @@ export default function Publications()
     {
       case 'journal': return 'Journal'
       case 'conference': return 'Conference'
-      case 'preprint': return 'Preprint'
+      case 'arxiv': return 'ArXiv'
+      case 'dissertation': return 'Dissertation'
       default: return type
     }
   }
@@ -53,7 +54,8 @@ export default function Publications()
     {
       case 'journal': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
       case 'conference': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-      case 'preprint': return 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+      case 'arxiv': return 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+      case 'dissertation': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
       default: return 'bg-gray-100 text-gray-800'
     }
   }
@@ -76,7 +78,7 @@ export default function Publications()
 
           {/* Filters */}
           <div className="flex flex-wrap gap-3">
-            {['all', 'journal', 'conference', 'preprint'].map(type => (
+            {['all', 'journal', 'conference', 'arxiv', 'dissertation'].map(type => (
               <button
                 key={type}
                 onClick={() => setFilter(type)}

@@ -7,7 +7,7 @@ export default function Footer()
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-gray-600 dark:text-gray-400 text-sm">
-            © 2024 Prasanth Kotaru. Built with Next.js & TailwindCSS.
+            © 2026 Prasanth Kotaru. Built with Next.js & TailwindCSS with the help of Antigravity and Claude Sonnet 4.5.
           </div>
 
           <button
