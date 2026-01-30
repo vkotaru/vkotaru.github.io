@@ -25,7 +25,7 @@ export default function Publications()
   const [filter, setFilter] = useState<string>('all')
   const [searchTerm, setSearchTerm] = useState('')
 
-  const publications: Publication[] = publicationsData.publications
+  const publications: Publication[] = publicationsData.publications as Publication[]
 
   const filtered = publications.filter(pub =>
   {
