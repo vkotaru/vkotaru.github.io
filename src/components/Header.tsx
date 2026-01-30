@@ -18,9 +18,10 @@ export default function Header()
   }, [])
 
   const navItems = [
-    { name: 'About', href: '#about' },
-    { name: 'Research', href: '#research' },
-    { name: 'Publications', href: '#publications' },
+    { name: 'About', href: '/#about' },
+    { name: 'Research', href: '/#research' },
+    { name: 'Publications', href: '/#publications' },
+    { name: 'Blog', href: '/blog' },
   ]
 
   return (
@@ -33,7 +34,7 @@ export default function Header()
       <nav className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo/Name */}
-          <Link href="#about" className="text-xl font-bold text-gray-900 dark:text-white hover:text-primary transition-colors">
+          <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-primary transition-colors">
             Prasanth Kotaru
           </Link>
 
