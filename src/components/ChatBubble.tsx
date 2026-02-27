@@ -12,6 +12,7 @@ interface ChatWindowProps
 {
   title?: string
   variant?: 'phone' | 'desktop'
+  scroll?: boolean
   children: React.ReactNode
 }
 
@@ -46,13 +47,13 @@ export function ChatBubble({ from = 'other', name, image, children }: ChatBubble
   )
 }
 
-export function ChatWindow({ title, variant = 'phone', children }: ChatWindowProps)
+export function ChatWindow({ title, variant = 'phone', scroll = false, children }: ChatWindowProps)
 {
   const isDesktop = variant === 'desktop'
 
   return (
     <div className={`not-prose my-8 mx-auto overflow-hidden shadow-lg border border-gray-200 dark:border-slate-700 ${isDesktop
-      ? 'max-w-2xl rounded-xl aspect-video flex flex-col'
+      ? `max-w-2xl rounded-xl flex flex-col${scroll ? ' aspect-video' : ''}`
       : 'max-w-sm rounded-[24px]'
       }`}>
       {/* Header bar */}
@@ -83,7 +84,7 @@ export function ChatWindow({ title, variant = 'phone', children }: ChatWindowPro
       </div>
 
       {/* Messages area */}
-      <div className={`bg-white dark:bg-slate-900 px-4 py-4 flex flex-col gap-0.5 ${isDesktop ? 'flex-1 overflow-y-auto' : 'min-h-[120px]'}`}>
+      <div className={`bg-white dark:bg-slate-900 px-4 py-4 flex flex-col gap-0.5 ${isDesktop ? (scroll ? 'flex-1 overflow-y-auto' : '') : 'min-h-[120px]'}`}>
         {children}
       </div>
 

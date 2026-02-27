@@ -5,12 +5,15 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 import { ChatBubble, ChatWindow } from '@/components/ChatBubble'
+import { Callout, Highlight } from '@/components/Callout'
 import 'katex/dist/katex.min.css'
 
 // Helper components for MDX
 const components = {
   ChatBubble,
   ChatWindow,
+  Callout,
+  Highlight,
   h2: (props: any) => <h2 className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-white" {...props} />,
   h3: (props: any) => <h3 className="text-xl font-bold mt-6 mb-3 text-gray-900 dark:text-white" {...props} />,
   p: (props: any) => <p className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed" {...props} />,
