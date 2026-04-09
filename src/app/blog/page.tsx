@@ -14,7 +14,7 @@ export default function Blog()
   const posts = getSortedPostsData()
 
   return (
-    <main className="min-h-screen bg-white dark:bg-slate-900 flex flex-col">
+    <main id="main-content" className="min-h-screen bg-white dark:bg-slate-900 flex flex-col">
       <Header />
       <div className="flex-grow pt-24 px-6">
         <div className="max-w-3xl mx-auto">

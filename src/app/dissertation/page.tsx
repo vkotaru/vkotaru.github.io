@@ -10,7 +10,7 @@ export const metadata = {
 export default function Dissertation()
 {
   return (
-    <main className="min-h-screen bg-white dark:bg-slate-900 flex flex-col">
+    <main id="main-content" className="min-h-screen bg-white dark:bg-slate-900 flex flex-col">
       <Header />
       <div className="flex-grow pt-24 px-6 pb-20">
         <article className="max-w-4xl mx-auto">

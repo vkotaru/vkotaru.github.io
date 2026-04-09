@@ -62,7 +62,7 @@ export default async function Post({ params }: any)
   if (!post)
   {
     return (
-      <main className="min-h-screen flex flex-col">
+      <main id="main-content" className="min-h-screen flex flex-col">
         <Header />
         <div className="flex-grow flex items-center justify-center">
           <h1 className="text-2xl font-bold">Post not found</h1>
@@ -73,7 +73,7 @@ export default async function Post({ params }: any)
   }
 
   return (
-    <main className="min-h-screen bg-white dark:bg-slate-900 flex flex-col">
+    <main id="main-content" className="min-h-screen bg-white dark:bg-slate-900 flex flex-col">
       <Header />
       <div className="flex-grow pt-24 px-6 pb-20">
         <article className="max-w-3xl mx-auto">

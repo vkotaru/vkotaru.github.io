@@ -17,6 +17,13 @@ export const metadata: Metadata = {
     description: 'Software Engineer, Motion Control at Waymo LLC',
     type: 'website',
     url: 'https://vkotaru.github.io',
+    images: [{ url: 'https://vkotaru.github.io/media/pkMarch2024.png', width: 400, height: 400, alt: 'Prasanth Kotaru' }],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Prasanth Kotaru | Motion Control Engineer',
+    description: 'Software Engineer, Motion Control at Waymo LLC',
+    images: ['https://vkotaru.github.io/media/pkMarch2024.png'],
   },
 }
 
@@ -28,7 +35,12 @@ export default function RootLayout({
 {
   return (
     <html lang="en" className={spaceGrotesk.variable} suppressHydrationWarning>
-      <body className="antialiased" suppressHydrationWarning>{children}</body>
+      <body className="antialiased" suppressHydrationWarning>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:px-4 focus:py-2 focus:rounded focus:shadow-lg focus:text-primary focus:font-medium">
+          Skip to main content
+        </a>
+        {children}
+      </body>
     </html>
   )
 }
