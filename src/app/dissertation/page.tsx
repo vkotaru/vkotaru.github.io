@@ -69,7 +69,7 @@ export default function Dissertation()
                   </a>
                 </div>
                 <div className="aspect-video rounded-lg overflow-hidden shadow-lg bg-black">
-                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/nBDDxpkz6Pg" title="Geometric L1 Adaptive Control" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/nBDDxpkz6Pg" title="Geometric L1 Adaptive Control" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy"></iframe>
                 </div>
               </div>
             </div>
@@ -102,7 +102,7 @@ export default function Dissertation()
                   </a>
                 </div>
                 <div className="aspect-video rounded-lg overflow-hidden shadow-lg bg-black">
-                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/e09RZOx_nZk" title="Direct Collocation Path Planning" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/e09RZOx_nZk" title="Direct Collocation Path Planning" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy"></iframe>
                 </div>
               </div>
             </div>
@@ -122,7 +122,7 @@ export default function Dissertation()
                   </a>
                 </div>
                 <div className="aspect-video rounded-lg overflow-hidden shadow-lg bg-black">
-                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Bo1-U9dzL-M" title="Collaborative Aerial Grasping" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Bo1-U9dzL-M" title="Collaborative Aerial Grasping" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy"></iframe>
                 </div>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function Dissertation()
                   </a>
                 </div>
                 <div className="aspect-video rounded-lg overflow-hidden shadow-lg bg-black">
-                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/i3egJ4fcAKM" title="Flexible Cable Dynamics" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                  <iframe width="100%" height="100%" src="https://www.youtube.com/embed/i3egJ4fcAKM" title="Flexible Cable Dynamics" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy"></iframe>
                 </div>
               </div>
             </div>

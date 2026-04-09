@@ -112,6 +112,7 @@ export default function Publications()
                       src={pub.image}
                       alt={pub.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 192px"
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
