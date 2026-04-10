@@ -106,15 +106,26 @@ export default function Publications()
                 className="bg-white dark:bg-slate-700 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="flex flex-col md:flex-row gap-6 p-6">
-                  {/* Image */}
+                  {/* Image / Video */}
                   <div className="flex-shrink-0 w-full md:w-48 h-40 relative rounded-lg overflow-hidden bg-gray-100 dark:bg-slate-600">
-                    <Image
-                      src={pub.image}
-                      alt={pub.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 192px"
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                    {pub.image.endsWith('.mp4') ? (
+                      <video
+                        src={pub.image}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <Image
+                        src={pub.image}
+                        alt={pub.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 192px"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    )}
                   </div>
 
                   {/* Content */}

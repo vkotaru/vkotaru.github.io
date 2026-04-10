@@ -9,7 +9,7 @@
       "venue": "PhD Dissertation",
       "year": 2022,
       "type": "dissertation",
-      "image": "/media/tetheredCatenaryDrone.gif",
+      "image": "/media/tetheredDrones.mp4",
       "links": {
         "pdf": "https://hybrid-robotics.berkeley.edu/publications/Dissertation2022_Prasanth_Kotaru.pdf",
         "video": "https://www.youtube.com/watch?v=Bo1-U9dzL-M"
@@ -28,7 +28,7 @@
       "venue": "arXiv",
       "year": 2023,
       "type": "arxiv",
-      "image": "/media/tetheredCatenaryDrone.gif",
+      "image": "/media/tetheredCatenaryDrone.mp4",
       "links": {
         "pdf": "https://arxiv.org/pdf/2203.08180.pdf",
         "arxiv": "https://arxiv.org/abs/2203.08180",
@@ -47,7 +47,7 @@
       "venue": "IEEE Robotics and Automation Letters (RA-L)",
       "year": 2020,
       "type": "journal",
-      "image": "/media/planningQuadLoad.gif",
+      "image": "/media/planningQuadLoad.mp4",
       "links": {
         "pdf": "/pdf/RAL2020PPQL.pdf",
         "video": "https://tinyurl.com/ym3xjhw4"
@@ -64,7 +64,7 @@
       "venue": "ASME Journal of Dynamic Systems, Measurement, and Control",
       "year": 2020,
       "type": "journal",
-      "image": "/media/geometricL1.gif",
+      "image": "/media/geometricL1.mp4",
       "links": {
         "pdf": "/pdf/JDSMC2020GeometricL1.pdf",
         "arxiv": "https://arxiv.org/abs/1910.07730",
@@ -81,7 +81,7 @@
       "venue": "IFAC World Congress",
       "year": 2020,
       "type": "conference",
-      "image": "/media/mqFlexibleCable.gif",
+      "image": "/media/mqFlexibleCable.mp4",
       "links": {
         "pdf": "/pdf/IFAC2020AerialFlexibleHose.pdf",
         "arxiv": "https://arxiv.org/abs/1911.12650",
@@ -104,7 +104,7 @@
       "venue": "European Control Conference (ECC)",
       "year": 2020,
       "type": "conference",
-      "image": "/media/cassieBallJuggling.gif",
+      "image": "/media/cassieBallJuggling.mp4",
       "links": {
         "pdf": "/pdf/ECC2020CassieJuggling.pdf",
         "video": "https://tinyurl.com/3ffmfbfs"
@@ -152,7 +152,7 @@
       "venue": "Indian Control Conference (ICC)",
       "year": 2018,
       "type": "conference",
-      "image": "/media/quadFlexibleCable.gif",
+      "image": "/media/quadFlexibleCable.mp4",
       "links": {
         "pdf": "/pdf/ICC2018MultiQuadLoadFlexCable.pdf",
         "arxiv": "https://arxiv.org/abs/1711.04895"
