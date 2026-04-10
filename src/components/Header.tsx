@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function Header()
 {
@@ -50,10 +51,13 @@ export default function Header()
                 {item.name}
               </Link>
             ))}
+            <ThemeToggle />
           </div>
 
-          {/* Mobile menu button */}
-          <button
+          {/* Mobile: theme toggle + menu button */}
+          <div className="flex md:hidden items-center gap-2">
+            <ThemeToggle />
+            <button
             className="md:hidden text-gray-700 dark:text-gray-300"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle navigation menu"
@@ -68,7 +72,8 @@ export default function Header()
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             )}
-          </button>
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation Menu */}
