@@ -1,6 +1,7 @@
 import Header from '@/components/Header'
 import Hero from '@/components/Hero'
 import Research from '@/components/Research'
+import Packages from '@/components/Packages'
 import Publications from '@/components/Publications'
 import Footer from '@/components/Footer'
 
@@ -11,6 +12,7 @@ export default function Home()
       <Header />
       <Hero />
       <Research />
+      <Packages />
       <Publications />
       <Footer />
     </main>
