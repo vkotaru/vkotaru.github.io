@@ -17,3 +17,212 @@ html {
     text-wrap: balance;
   }
 }
+
+:root {
+  --fig-bg: #ffffff;
+}
+
+.dark {
+  --fig-bg: #0f172a;
+}
+
+/* Shared by CartPole and Figure: a block that can float beside article text
+   at a chosen width, and collapses to full width on narrow screens. */
+.float-figure {
+  width: var(--figure-width, 100%);
+}
+
+.float-figure--right {
+  margin-left: 2rem;
+}
+
+.float-figure--left {
+  margin-right: 2rem;
+}
+
+.float-figure--center {
+  margin-inline: auto;
+}
+
+.cart-pole-controls {
+  container: cart-pole-controls / inline-size;
+}
+
+/* Column count follows the simulator's own width, not the viewport: a
+   Tailwind sm: breakpoint would give three columns inside a 500px box on a
+   wide screen and squeeze the labels to ellipses. */
+.cart-pole-field-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 1rem;
+  row-gap: 0.5rem;
+}
+
+@container cart-pole-controls (min-width: 340px) {
+  .cart-pole-field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container cart-pole-controls (min-width: 760px) {
+  .cart-pole-field-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .float-figure {
+    width: 100%;
+    float: none !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Display math is a block box, so a float does not narrow it: it spans the
+   full column and slides under the figure, which puts \tag's right:0 equation
+   number out beside the image. flow-root makes it a block formatting context
+   root, and a BFC root may not overlap a float -- so it shrinks to the text
+   column and the number lands at the end of the equation where it belongs.
+   Higher specificity than KaTeX's own .katex-display{display:block}. */
+.prose .katex-display {
+  display: flow-root;
+}
+
+/* MDX's `components` map only applies to elements markdown generates, so a
+   literal <details>/<summary> typed in a post bypasses it entirely. Style
+   them here instead, which keeps the post's syntax untouched. Collapsing is
+   the browser's own default -- no `open` attribute, no JS. */
+.prose details {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+:root:not([data-theme="light"]) .dark .prose details,
+.dark .prose details {
+  background: rgb(30 41 59 / 0.5);
+  border-color: rgb(51 65 85);
+}
+
+.prose summary {
+  cursor: pointer;
+  font-weight: 600;
+  list-style: none;
+  color: #111827;
+}
+
+.dark .prose summary {
+  color: #f8fafc;
+}
+
+.prose summary:hover {
+  color: #2563eb;
+}
+
+/* Replace the default marker with one that rotates when open. */
+.prose summary::-webkit-details-marker {
+  display: none;
+}
+
+.prose summary::before {
+  content: "\25B6";
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 0.75em;
+  transition: transform 0.15s ease;
+}
+
+.prose details[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+/* Give the revealed content a little breathing room from the summary. */
+.prose details[open] > summary {
+  margin-bottom: 0.75rem;
+}
+
+/* ---- wide equations on narrow screens -------------------------------- *
+   KaTeX sets white-space:nowrap on display math, so a wide equation cannot
+   wrap -- it just overflows and drags the whole page into horizontal scroll.
+   Give it its own scroll container instead. */
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* room so the hidden y-overflow cannot clip tall fractions or braces */
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+
+/* The equation is the scrolling content. As an inline-block it still centres
+   when it fits, but when it is wider than the screen it starts at the LEFT
+   edge -- text-align:center on a block child would centre the overflow, so it
+   would spill off both sides and the beginning would be unreachable. */
+.prose .katex-display > .katex {
+  display: inline-block;
+  text-align: initial;
+}
+
+/* Reserve room for the equation number so it cannot land on the last term.
+   Scoped with :has() so untagged equations are not nudged off-centre. */
+.prose .katex-display > .katex > .katex-html:has(> .tag) {
+  padding-right: 2.75rem;
+}
+
+/* Inline matrices are the other offender: unbreakable and far wider than a
+   phone. Scope this with :has() so ordinary inline math like $x$ keeps its
+   normal baseline -- adding overflow to an inline-block moves its baseline
+   to the bottom margin edge, which would misalign every symbol on the page. */
+.prose p .katex:has(.mtable) {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  vertical-align: middle;
+}
+
+@media (max-width: 640px) {
+  .prose .katex-display {
+    font-size: 0.9em;
+  }
+
+}
+
+/* A bare URL used as link text is one unbreakable token and will push past a
+   phone's viewport. Let long words break rather than overflow. */
+.prose a {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ---- body font, switchable at runtime -------------------------------- *
+   next/font exposes each family as a CSS variable; --font-body picks which
+   one Tailwind's `sans` resolves to. Set data-font on <html> to change it.
+   KaTeX ships its own faces (KaTeX_Main etc.) so the maths is unaffected,
+   and the simulator's canvas draws with an explicit font string. */
+:root {
+  --font-body: var(--font-manrope);
+}
+
+[data-font="grotesk"] {
+  --font-body: var(--font-space-grotesk);
+}
+
+[data-font="inter"] {
+  --font-body: var(--font-inter);
+}
+
+[data-font="serif"] {
+  --font-body: var(--font-source-serif);
+}
+
+[data-font="legible"] {
+  --font-body: var(--font-atkinson);
+}
+
+/* The serif runs small next to the geometric sans; nudge prose up a little
+   so switching does not change how much text fits on a line. */
+[data-font="serif"] .prose {
+  font-size: 1.05em;
+}

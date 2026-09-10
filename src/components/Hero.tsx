@@ -1,10 +1,11 @@
 import Image from 'next/image'
+import ScrollCue from '@/components/ScrollCue'
 import Link from 'next/link'
 
 export default function Hero()
 {
   return (
-    <section id="about" className="min-h-screen flex items-center pt-16 pb-12 px-6 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <section id="about" className="relative min-h-screen flex items-center pt-16 pb-12 px-6 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <div className="max-w-6xl mx-auto w-full">
         <div className="grid md:grid-cols-[300px_1fr] gap-8 items-start">
           {/* Profile Image */}
@@ -95,6 +96,8 @@ export default function Hero()
           </div>
         </div>
       </div>
+
+      <ScrollCue />
     </section>
   )
 }

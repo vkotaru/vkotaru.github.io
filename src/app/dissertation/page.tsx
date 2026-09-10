@@ -13,7 +13,7 @@ export default function Dissertation()
     <main id="main-content" className="min-h-screen bg-white dark:bg-slate-900 flex flex-col">
       <Header />
       <div className="flex-grow pt-24 px-6 pb-20">
-        <article className="max-w-4xl mx-auto">
+        <article className="max-w-6xl mx-auto">
           {/* Header */}
           <header className="mb-12 text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">

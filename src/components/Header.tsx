@@ -1,23 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import ThemeToggle from '@/components/ThemeToggle'
+import FontToggle from '@/components/FontToggle'
 
 export default function Header()
 {
-  const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
-  useEffect(() =>
-  {
-    const handleScroll = () =>
-    {
-      setIsScrolled(window.scrollY > 10)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   const navItems = [
     { name: 'About', href: '/#about' },
@@ -28,8 +18,12 @@ export default function Header()
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled || isMobileMenuOpen
-        ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm'
+      // Fully transparent: no fill and no backdrop-blur, since a blur filters
+      // whatever passes behind it and so occludes just as a fill does. Only the
+      // open mobile menu gets a background, because a menu list over scrolling
+      // body text is unreadable.
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isMobileMenuOpen
+        ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm'
         : 'bg-transparent'
         }`}
     >
@@ -51,11 +45,13 @@ export default function Header()
                 {item.name}
               </Link>
             ))}
+            <FontToggle />
             <ThemeToggle />
           </div>
 
           {/* Mobile: theme toggle + menu button */}
           <div className="flex md:hidden items-center gap-2">
+            <FontToggle />
             <ThemeToggle />
             <button
             className="md:hidden text-gray-700 dark:text-gray-300"

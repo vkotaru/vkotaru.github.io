@@ -2,7 +2,7 @@ export default function Contact()
 {
   return (
     <section id="contact" className="py-12 px-6 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      <div className="max-w-4xl mx-auto text-center">
+      <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
           Get in Touch
         </h2>

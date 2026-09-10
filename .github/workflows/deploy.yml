@@ -16,6 +16,9 @@ concurrency:
 
 jobs:
   build:
+    # Only ever deploy from the public repo. The private mirror shares this
+    # history but has no Pages site, so without this it fails on every push.
+    if: github.repository == 'vkotaru/vkotaru.github.io'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,6 +42,7 @@ jobs:
           path: ./out
 
   deploy:
+    if: github.repository == 'vkotaru/vkotaru.github.io'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

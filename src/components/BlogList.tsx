@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { Post } from '@/lib/posts'
+import { formatPostDate } from '@/lib/date'
+import { slugify } from '@/lib/toc'
 
 export default function BlogList({ posts }: { posts: Post[] })
 {
@@ -10,6 +12,38 @@ export default function BlogList({ posts }: { posts: Post[] })
 
   // Get all unique tags
   const allTags = ['All', ...Array.from(new Set(posts.flatMap(post => post.tags || [])))]
+
+  // The URL hash selects a tag, so /blog#back2basics is shareable and the
+  // browser's back button works. Matching is on the slug, not the label.
+  useEffect(() =>
+  {
+    const applyHash = () =>
+    {
+      const hash = decodeURIComponent(window.location.hash.replace(/^#/, '')).toLowerCase()
+      if (!hash)
+      {
+        setSelectedTag('All')
+        return
+      }
+      const tags = Array.from(new Set(posts.flatMap((post) => post.tags || [])))
+      setSelectedTag(tags.find((tag) => slugify(tag) === hash) ?? 'All')
+    }
+
+    applyHash()
+    window.addEventListener('hashchange', applyHash)
+    return () => window.removeEventListener('hashchange', applyHash)
+  }, [posts])
+
+  const selectTag = useCallback((tag: string) =>
+  {
+    setSelectedTag(tag)
+    // replaceState rather than assigning location.hash: no scroll jump, and
+    // flipping through filters does not fill the history stack.
+    const url = tag === 'All'
+      ? window.location.pathname + window.location.search
+      : `#${slugify(tag)}`
+    window.history.replaceState(null, '', url)
+  }, [])
 
   // Filter posts
   const filteredPosts = selectedTag === 'All'
@@ -23,7 +57,7 @@ export default function BlogList({ posts }: { posts: Post[] })
         {allTags.map(tag => (
           <button
             key={tag}
-            onClick={() => setSelectedTag(tag)}
+            onClick={() => selectTag(tag)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedTag === tag
               ? 'bg-primary text-white shadow-md'
               : 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700'
@@ -44,11 +78,7 @@ export default function BlogList({ posts }: { posts: Post[] })
               <Link href={`/blog/${post.slug}`} className="block">
                 <div className="flex flex-col gap-2">
                   <span className="text-sm text-gray-500 dark:text-gray-500 font-mono">
-                    {new Date(post.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
+                    {formatPostDate(post.date)}
                   </span>
                   <h2 className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
                     {post.title}

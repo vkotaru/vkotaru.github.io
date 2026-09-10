@@ -23,7 +23,10 @@ export function getSortedPostsData(): Post[]
     return []
   }
 
-  const fileNames = fs.readdirSync(postsDirectory)
+  // Only .mdx is a post. Without this filter any stray file in the directory
+  // (scratch notes, editor backups) becomes a published route with empty
+  // front matter.
+  const fileNames = fs.readdirSync(postsDirectory).filter((f) => f.endsWith('.mdx'))
   const allPostsData = fileNames.map((fileName) =>
   {
     // Remove ".mdx" from file name to get id

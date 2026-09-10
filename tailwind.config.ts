@@ -6,6 +6,7 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/content/**/*.{md,mdx}',
   ],
   theme: {
     extend: {
@@ -19,7 +20,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-space-grotesk)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-body)', 'var(--font-space-grotesk)', 'system-ui', 'sans-serif'],
       },
     },
   },

@@ -1,4 +1,8 @@
+import React from 'react'
 import { getPostData, getSortedPostsData } from '@/lib/posts'
+import { extractToc, slugify } from '@/lib/toc'
+import TableOfContents from '@/components/TableOfContents'
+import { formatPostDate } from '@/lib/date'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { MDXRemote } from 'next-mdx-remote/rsc'
@@ -6,7 +10,19 @@ import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 import { ChatBubble, ChatWindow } from '@/components/ChatBubble'
 import { Callout, Highlight } from '@/components/Callout'
+import Figure from '@/components/Figure'
+import Plot from '@/components/Plot'
 import 'katex/dist/katex.min.css'
+
+/** Flatten a heading's children to plain text so it can be slugified. */
+function headingText(node: React.ReactNode): string
+{
+  if (node === null || node === undefined || typeof node === 'boolean') return ''
+  if (typeof node === 'string' || typeof node === 'number') return String(node)
+  if (Array.isArray(node)) return node.map(headingText).join('')
+  if (React.isValidElement(node)) return headingText((node.props as any).children)
+  return ''
+}
 
 // Helper components for MDX
 const components = {
@@ -14,8 +30,10 @@ const components = {
   ChatWindow,
   Callout,
   Highlight,
-  h2: (props: any) => <h2 className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-white" {...props} />,
-  h3: (props: any) => <h3 className="text-xl font-bold mt-6 mb-3 text-gray-900 dark:text-white" {...props} />,
+  Figure,
+  Plot,
+  h2: (props: any) => <h2 id={slugify(headingText(props.children))} className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-white" {...props} />,
+  h3: (props: any) => <h3 id={slugify(headingText(props.children))} className="text-xl font-bold mt-6 mb-3 text-gray-900 dark:text-white" {...props} />,
   p: (props: any) => <p className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed" {...props} />,
   ul: (props: any) => <ul className="list-disc list-inside mb-4 space-y-2 text-gray-700 dark:text-gray-300" {...props} />,
   ol: (props: any) => <ol className="list-decimal list-inside mb-4 space-y-2 text-gray-700 dark:text-gray-300" {...props} />,
@@ -23,16 +41,18 @@ const components = {
   a: (props: any) => <a className="text-primary hover:underline" target="_blank" rel="noopener noreferrer" {...props} />,
   blockquote: (props: any) => <blockquote className="border-l-4 border-gray-200 dark:border-gray-700 pl-4 italic my-4 text-gray-600 dark:text-gray-400" {...props} />,
   code: (props: any) => <code className="bg-gray-100 dark:bg-slate-800 rounded px-1 py-0.5 font-mono text-sm text-pink-600 dark:text-pink-400" {...props} />,
-  pre: (props: any) => <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto my-6 font-mono text-sm leading-relaxed" {...props} />,
+  // Reset the inline-code pill styling for <code> inside a fenced block,
+  // otherwise every line renders as a light chip on the dark <pre>.
+  pre: (props: any) => <pre className="bg-gray-100 dark:bg-slate-800 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-slate-700 rounded-lg p-4 overflow-x-auto my-6 font-mono text-sm leading-relaxed [&_code]:!bg-transparent [&_code]:!text-inherit [&_code]:!p-0 [&_code]:!rounded-none" {...props} />,
   details: (props: any) => <details className="mb-4 bg-gray-50 dark:bg-slate-800/50 p-4 rounded-lg" {...props} />,
   summary: (props: any) => <summary className="cursor-pointer font-semibold text-gray-900 dark:text-white hover:text-primary mb-2" {...props} />,
 }
 
 interface Props
 {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateStaticParams()
@@ -43,9 +63,10 @@ export async function generateStaticParams()
   }))
 }
 
-export async function generateMetadata({ params }: any)
+export async function generateMetadata({ params }: Props)
 {
-  const post = getPostData(params.slug)
+  const { slug } = await params
+  const post = getPostData(slug)
   if (!post) return {}
   return {
     title: `${post.title} | Prasanth Kotaru`,
@@ -53,11 +74,11 @@ export async function generateMetadata({ params }: any)
   }
 }
 
-export default async function Post({ params }: any)
+export default async function Post({ params }: Props)
 {
-  // Await params in case it's a promise (Next.js 15 change)
   const resolvedParams = await params
   const post = getPostData(resolvedParams.slug)
+  const toc = post ? extractToc(post.content) : []
 
   if (!post)
   {
@@ -75,8 +96,9 @@ export default async function Post({ params }: any)
   return (
     <main id="main-content" className="min-h-screen bg-white dark:bg-slate-900 flex flex-col">
       <Header />
+      <TableOfContents items={toc} />
       <div className="flex-grow pt-24 px-6 pb-20">
-        <article className="max-w-3xl mx-auto">
+        <article className="max-w-6xl mx-auto">
           {/* Post Header */}
           <header className="mb-10 text-center">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
@@ -84,11 +106,7 @@ export default async function Post({ params }: any)
             </h1>
             <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
               <time dateTime={post.date}>
-                {new Date(post.date).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
+                {formatPostDate(post.date)}
               </time>
               <span>•</span>
               <span>{post.author || 'Prasanth Kotaru'}</span>
