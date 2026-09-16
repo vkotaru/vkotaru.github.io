@@ -10,8 +10,15 @@ import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 import { ChatBubble, ChatWindow } from '@/components/ChatBubble'
 import { Callout, Highlight } from '@/components/Callout'
+import CartPole from '@/components/CartPole'
 import Figure from '@/components/Figure'
 import Plot from '@/components/Plot'
+import Draft from '@/components/Draft'
+import Excerpt from '@/components/Excerpt'
+import Tangent from '@/components/Tangent'
+import MetricCards from '@/components/MetricCards'
+import MetricRadar from '@/components/MetricRadar'
+import { Metric } from '@/components/Metric'
 import 'katex/dist/katex.min.css'
 
 /** Flatten a heading's children to plain text so it can be slugified. */
@@ -30,8 +37,15 @@ const components = {
   ChatWindow,
   Callout,
   Highlight,
+  CartPole,
   Figure,
   Plot,
+  Draft,
+  Excerpt,
+  Tangent,
+  MetricCards,
+  MetricRadar,
+  Metric,
   h2: (props: any) => <h2 id={slugify(headingText(props.children))} className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-white" {...props} />,
   h3: (props: any) => <h3 id={slugify(headingText(props.children))} className="text-xl font-bold mt-6 mb-3 text-gray-900 dark:text-white" {...props} />,
   p: (props: any) => <p className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed" {...props} />,
@@ -83,7 +97,7 @@ export default async function Post({ params }: Props)
   if (!post)
   {
     return (
-      <main id="main-content" className="min-h-screen flex flex-col">
+      <main id="main-content" className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col">
         <Header />
         <div className="flex-grow flex items-center justify-center">
           <h1 className="text-2xl font-bold">Post not found</h1>
@@ -94,7 +108,7 @@ export default async function Post({ params }: Props)
   }
 
   return (
-    <main id="main-content" className="min-h-screen bg-white dark:bg-slate-900 flex flex-col">
+    <main id="main-content" className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex flex-col">
       <Header />
       <TableOfContents items={toc} />
       <div className="flex-grow pt-24 px-6 pb-20">

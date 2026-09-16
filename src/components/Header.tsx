@@ -18,16 +18,23 @@ export default function Header()
 
   return (
     <header
-      // Fully transparent: no fill and no backdrop-blur, since a blur filters
-      // whatever passes behind it and so occludes just as a fill does. Only the
-      // open mobile menu gets a background, because a menu list over scrolling
-      // body text is unreadable.
+      // The bar itself carries no fill; a masked scrim underneath fades whatever
+      // scrolls behind it, strongest at the top edge and gone by the bottom, so
+      // there is no hard line across the page. Only the open mobile menu gets a
+      // solid background, because a menu list over scrolling body text is
+      // unreadable.
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isMobileMenuOpen
         ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm'
-        : 'bg-transparent'
+        : ''
         }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 py-4">
+      {!isMobileMenuOpen && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 backdrop-blur-[3px] bg-gradient-to-b from-white/85 via-white/55 to-transparent dark:from-slate-900/85 dark:via-slate-900/55 [mask-image:linear-gradient(to_bottom,black_55%,transparent)]"
+        />
+      )}
+      <nav className="relative max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo/Name */}
           <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white hover:text-primary transition-colors">

@@ -53,21 +53,12 @@ html {
    wide screen and squeeze the labels to ellipses. */
 .cart-pole-field-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  /* Fit as many ~11rem columns as the panel allows, rather than stepping at
+     fixed breakpoints -- otherwise a mid-width panel sits at two very wide
+     columns and the label/input gap stretches to fill them. */
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   column-gap: 1rem;
   row-gap: 0.5rem;
-}
-
-@container cart-pole-controls (min-width: 340px) {
-  .cart-pole-field-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@container cart-pole-controls (min-width: 760px) {
-  .cart-pole-field-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 640px) {
@@ -225,4 +216,47 @@ html {
    so switching does not change how much text fits on a line. */
 [data-font="serif"] .prose {
   font-size: 1.05em;
+}
+
+/* ---- draft markers (development only) --------------------------------- *
+   Draft.tsx renders nothing but its children in a production build, so these
+   rules only ever apply while writing. */
+.draft-block {
+  position: relative;
+  border-left: 3px solid #f59e0b;
+  background: rgb(245 158 11 / 0.06);
+  border-radius: 0 0.375rem 0.375rem 0;
+  padding: 0.75rem 1rem 0.25rem 1rem;
+  margin: 1.5rem 0;
+}
+
+.draft-block::before {
+  content: attr(data-draft-label);
+  position: absolute;
+  top: -0.6rem;
+  left: 0.75rem;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b45309;
+  background: #fffbeb;
+  border: 1px solid rgb(245 158 11 / 0.4);
+  border-radius: 0.25rem;
+  padding: 0.05rem 0.4rem;
+}
+
+.dark .draft-block::before {
+  color: #fcd34d;
+  background: #1c1917;
+  border-color: rgb(245 158 11 / 0.35);
+}
+
+/* Tint the prose inside so drafted text is obvious mid-scroll. */
+.draft-block :is(p, li) {
+  color: #92400e;
+}
+
+.dark .draft-block :is(p, li) {
+  color: #fcd34d;
 }
