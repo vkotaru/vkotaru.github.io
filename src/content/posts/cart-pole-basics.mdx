@@ -1,0 +1,420 @@
+---
+title: "Back to Basics: Cart-Pole Equations of Motion"
+date: "2026-09-09"
+description: "Reinventing the wheel: nothing new, plain old nonlinear dynamics and having some fun with it."
+tags:
+  ["Control Theory", "Lagrangian Mechanics", "Back2Basics", "Nonlinear Systems"]
+author: "Prasanth Kotaru"
+---
+
+<Callout type="info" title="Disclaimer">
+  Back to basics [#Back2Basics](https://vkotaru.github.io/blog/#back2basics) is
+  a series of notes, that I mostly wrote for myself and putting it here. Note,
+  all the math, notes and discussions are my own, AI usage is limited to
+  building the tools, website, formatting and sanity-checking my work.
+</Callout>
+
+The cart-pole system is one of the first nonlinear systems I ever learned and ran experiments on. I have been feeling a bit dumb lately with all the AI usage and want to get back to basics. I do not have a specific objective in mind, may be some vague ideas as to where I would go with these notes. As opposed to static images, it's so easy to add cool visualizations like the one below using AI, to make the notes a bit more lively.
+
+<CartPole
+  width={50}
+  align="left"
+  mode="passive"
+  theta0={12}
+  caption="No control at all. Drag the pole, or the cart, and let go."
+/>
+## The model
+
+Consider a cart-pole system, with the cart motion restricted to the horizontal axis, and pole is free to swing, assume the mass of the pole is negligible and mass is lumped at the tip of the pole. Other end of the pole is connected to the center of mass of the cart and is free to rotate at this point. We can apply a horizontal force at the center of mass of the cart. This system is underactuated, with one input and two degrees of freedom (one for the cart and another for the pole).
+
+Let $M$ be the mass of the cart, $m$ the mass lumped at the tip, $l$ the length of the pole, and $u$ the input force applied at the cart's centre of mass. Let $x$ be the cart position, positive to the right, and let $\theta$ be the pole angle measured from the downward vertical (the $-y$ direction). Here, $\theta = 0$ is the hanging position; positive angles are counter-clockwise, and negative angles are clockwise.
+
+<div className="clear-left" />
+
+<Figure
+  src="/figures/cart-pole.svg"
+  width={30}
+  align="right"
+  caption="Cart-pole schematic. The pole pivots at the cart's centre of mass; θ is measured from the downward vertical, positive anti-clockwise."
+/>
+
+### Equations of Motion
+
+Let's derive the equations of motion. One approach is to use the <a href="https://en.wikipedia.org/wiki/Euler%E2%80%93Lagrange_equation" target="_blank" rel="noopener noreferrer">Euler-Lagrange equations</a>:
+
+$$
+\frac{d}{dt}\left(\frac{\partial \mathcal{L}}{\partial \dot{q}_i}\right) - \frac{\partial \mathcal{L}}{\partial q_i} = Q_i
+$$
+
+I personally love to use the <a href="https://www.feynmanlectures.caltech.edu/II_19.html" target="_blank" rel="noopener noreferrer">Principle of Least Action</a>:
+
+$$
+\begin{equation}
+\delta \int \mathcal{L}\,dt + \int \delta\mathcal{W}\,dt = 0
+\end{equation}
+$$
+
+<Callout type="note" title="Doing this symbolically">
+  I have implemented a symbolic way to derive equations of motion using the
+  Principle of Least Action in
+  [pygeomech](https://github.com/vkotaru/pygeomech)
+</Callout>
+
+$\mathcal{L}$ is the Lagrangian, $\mathcal{L} = T - V$, where $T$ is the kinetic energy and $V$ is the potential energy. $\delta\mathcal{W}$ is the infinitesimal virtual work done by non-conservative forces. In our case, the only non-conservative force is the input force $u$ applied at the cart's centre of mass.
+
+For my convenience, I'll switch to 2D, with $y$ positive upward. The cart and pole positions are $X_{c} = \begin{bmatrix} x \\ 0 \end{bmatrix}$ and $X_{p} = \begin{bmatrix} x + l\sin\theta \\ -l\cos\theta \end{bmatrix}$, so their velocities are $\dot{X}_{c} = \begin{bmatrix} \dot{x} \\ 0 \end{bmatrix}$ and $\dot{X}_{p} = \begin{bmatrix} \dot{x} + l\cos\theta\dot{\theta} \\ l\sin\theta\dot{\theta} \end{bmatrix}$, so the total kinetic energy of the system is $T = \frac{1}{2}M\langle\dot{X}_{c}, \dot{X}_{c}\rangle + \frac{1}{2}m\langle\dot{X}_{p}, \dot{X}_{p}\rangle$ and the potential energy is $V = mg\langle e_2, X_{p}\rangle$, where $e_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$ is the unit vector in the $y$ direction.
+
+<details>
+<summary>Open at your own risk</summary>
+
+Let's tackle the $\delta \int \mathcal{L}\,dt$ term first,
+
+$$
+\begin{align}
+  \delta \int \mathcal{L}\,dt &= \delta \int \Bigg( \frac{1}{2}M\langle\dot{X}_{c}, \dot{X}_{c}\rangle + \frac{1}{2}m\langle\dot{X}_{p}, \dot{X}_{p}\rangle - mg\langle e_2, X_{p}\rangle \Bigg)dt \\
+  &= \int \Bigg( M\langle\dot{X}_{c}, \delta\dot{X}_{c}\rangle + m\langle\dot{X}_{p}, \delta\dot{X}_{p}\rangle - mg\langle e_2, \delta X_{p}\rangle \Bigg)dt
+\end{align}
+$$
+
+(The variation terms are $\delta X_c = \begin{bmatrix} \delta x \\ 0 \end{bmatrix}$, $\delta X_p = \begin{bmatrix} \delta x + l\cos\theta\delta\theta \\ l\sin\theta\delta\theta \end{bmatrix}$, $\delta\dot{X}_c = \begin{bmatrix} \delta\dot{x} \\ 0 \end{bmatrix}$, and $\delta\dot{X}_p = \begin{bmatrix} \delta\dot{x} + l\cos\theta\delta\dot\theta - l\sin\theta\dot\theta\delta\theta \\ l\sin\theta\delta\dot\theta + l\cos\theta\dot\theta\delta\theta \end{bmatrix}$.)
+
+$$
+\begin{align}
+  &= \int \Bigg( M\langle \begin{bmatrix} \dot{x} \\ 0 \end{bmatrix},  \begin{bmatrix} \delta\dot{x} \\ 0 \end{bmatrix}\rangle + m\langle  \begin{bmatrix}  \dot{x} + l\cos\theta\dot{\theta} \\ l\sin\theta\dot{\theta}  \end{bmatrix},  \begin{bmatrix} \delta\dot{x} + l\cos\theta\delta\dot\theta - l\sin\theta\dot\theta\delta\theta \\ l\sin\theta\delta\dot\theta + l\cos\theta\dot\theta\delta\theta \end{bmatrix} \rangle - mg\langle \begin{bmatrix} 0 \\ 1 \end{bmatrix},  \begin{bmatrix} \delta x + l\cos\theta\delta\theta \\ l\sin\theta\delta\theta \end{bmatrix}\rangle \Bigg)dt \\
+\end{align}
+$$
+
+now to the fun part, sending some of these terms to the oblivion,
+
+$$
+\begin{align}
+  &= \int \Bigg(  M\dot{x}\delta\dot{x} + m \begin{pmatrix}  \dot{x}\delta\dot{x} + \dot{x}l\cos\theta\delta\dot\theta - \dot{x}l\sin\theta\dot\theta\delta\theta  \\ +  \delta\dot{x}l\cos\theta\dot{\theta}  + l^2\cos^2\theta\delta\dot\theta\dot{\theta}  - \cancel{l^2\sin\theta\cos\theta\dot\theta^2\delta\theta}   \\ +  l^2\sin^2\theta\dot{\theta}\delta\dot\theta +  \cancel{l^2\sin\theta\cos\theta\dot\theta^2\delta\theta} \end{pmatrix}  - mg  l\sin\theta\delta\theta \Bigg)dt \\
+  & = \int \Bigg(  (M+m)\dot{x}\delta\dot{x} + m l\cos\theta\dot{\theta}\delta\dot{x} + m l\cos\theta\dot{x}\delta\dot\theta + m l^2(\cos^2\theta + \sin^2\theta)\dot{\theta}\delta\dot\theta - m l\sin\theta\dot{\theta}\dot{x}\delta\theta - mg  l\sin\theta\delta\theta \Bigg)dt \\
+  & = \int \Bigg(  \big((M+m)\dot{x} + m l\cos\theta\dot{\theta}\big)\delta\dot{x} + \big(m l\cos\theta\dot{x} + ml^2\dot\theta\big)\delta\dot\theta
+  + \big(- m l\sin\theta\dot{\theta}\dot{x} - mg  l\sin\theta \big)\delta \theta
+  \Bigg)dt \\
+\end{align}
+$$
+
+let's put our fancy hat and do integration by parts. The variations vanish at
+the endpoints, $\delta x(t_0) = \delta x(t_1) = 0$ and $\delta\theta(t_0) = \delta\theta(t_1) = 0$,
+so the boundary terms $\big[\,\cdot\,\delta x\big]_{t_0}^{t_1}$ and $\big[\,\cdot\,\delta\theta\big]_{t_0}^{t_1}$
+drop out and only the $-\int \frac{d}{dt}(\cdot)$ pieces survive,
+
+$$
+\begin{align}
+  & = \int \Bigg(  \underbrace{\big((M+m)\dot{x} + m l\cos\theta\dot{\theta}\big)}\delta\dot{x} + \underbrace{\big(m l\cos\theta\dot{x} + ml^2\dot\theta\big)}\delta\dot\theta
+  + \big(- m l\sin\theta\dot{\theta}\dot{x} - mg  l\sin\theta \big)\delta \theta
+  \Bigg)dt \\
+  & = \int \Bigg(
+    \begin{aligned}
+      &-\underbrace{\big((M+m)\ddot{x} + m l\cos\theta\ddot{\theta} - m l\sin\theta\dot{\theta}^2\big)}\,\delta{x} \\
+      &-\underbrace{\big(m l\cos\theta\ddot{x} - m l\sin\theta\dot{\theta}\dot{x} + ml^2\ddot\theta\big)}\,\delta\theta \\
+      &+ \big(- m l\sin\theta\dot{\theta}\dot{x} - mg l\sin\theta \big)\,\delta \theta
+    \end{aligned}
+  \Bigg)dt \\
+    & = \int \Bigg(
+    \begin{aligned}
+      &\big(-(M+m)\ddot{x} - m l\cos\theta\ddot{\theta} + m l\sin\theta\dot{\theta}^2\big)\,\delta{x} \\
+      &+ \big(-m l\cos\theta\ddot{x} - ml^2\ddot\theta - mg l\sin\theta \big)\,\delta \theta
+    \end{aligned}
+  \Bigg)dt
+\end{align}
+$$
+
+So we have
+
+$$
+\delta \int \mathcal{L}\,dt = \int \Bigg(
+  \begin{aligned}
+    &\big(-(M+m)\ddot{x} - m l\cos\theta\ddot{\theta} + m l\sin\theta\dot{\theta}^2\big)\,\delta{x} \\
+    &+ \big(-m l\cos\theta\ddot{x} - ml^2\ddot\theta - mg l\sin\theta \big)\,\delta \theta
+  \end{aligned}
+\Bigg)dt
+$$
+
+now let's look at the virtual work done,
+
+$$
+\begin{align}
+  \int \delta\mathcal{W}\,dt &= \int \langle u\,e_1, \delta X_{c}\rangle\,dt = \int \langle \begin{bmatrix} u \\ 0 \end{bmatrix}, \begin{bmatrix} \delta x \\ 0 \end{bmatrix}\rangle\,dt = \int u\,\delta x\,dt
+\end{align}
+$$
+
+The force acts on the cart and only along $x$, so it does no work through $\delta\theta$.
+
+Putting it all together, $\delta \int \mathcal{L}\,dt + \int \delta\mathcal{W}\,dt = 0$ must hold for arbitrary, independent variations $\delta x$ and $\delta\theta$, for all $t$,
+
+$$
+\begin{align}
+  \int \Bigg(
+    \begin{aligned}
+      &\big(-(M+m)\ddot{x} - m l\cos\theta\ddot{\theta} + m l\sin\theta\dot{\theta}^2 + u\big)\,\delta{x} \\
+      &+ \big(-m l\cos\theta\ddot{x} - ml^2\ddot\theta - mg l\sin\theta\big)\,\delta\theta
+    \end{aligned}
+  \Bigg)dt &= 0
+\end{align}
+$$
+
+for that to happen each coefficient must vanish, that gives us,
+
+$$
+\begin{align}
+  (M+m)\ddot{x} + m l\cos\theta\,\ddot{\theta} - m l\sin\theta\,\dot{\theta}^2 &= u \\
+  ml^2\,\ddot\theta + ml\cos\theta\,\ddot{x} + mgl\sin\theta &= 0
+\end{align}
+$$
+
+Oh, thank god! It matches the equations (14 and 15) from [https://underactuated.mit.edu/acrobot.html](https://underactuated.mit.edu/acrobot.html), it would have been a bad day if not lol.
+
+</details>
+
+In the standard form (aka $M\ddot{q}+C\dot{q} = G + Bu$), we write the equations of motion as,
+
+$$
+\begin{equation}
+\begin{bmatrix}
+  M+m & ml\cos\theta \\
+  ml\cos\theta & ml^2
+\end{bmatrix} \begin{bmatrix}
+  \ddot{x} \\
+  \ddot{\theta} \end{bmatrix} + \begin{bmatrix} 0 & -ml\sin\theta\dot\theta \\ 0 & 0 \end{bmatrix} \begin{bmatrix}
+  \dot{x} \\ \dot{\theta} \end{bmatrix} = \begin{bmatrix}
+  0 \\ -mgl\sin\theta \end{bmatrix} + \begin{bmatrix}
+  1 \\ 0 \end{bmatrix} u
+\end{equation}
+$$
+
+### Adding Friction
+
+<CartPole
+  mode="passive"
+  width={50}
+  align="right"
+  theta0={40}
+  cartDamping={0.4}
+  pivotDamping={0.2}
+  showFriction
+  caption="Same cart-pole, now with viscous friction on the rail and at the pivot. Set both to zero to recover the frictionless swing."
+/>
+
+Lets add some reality (aka friction) into these equations. In reality, friction is everywhere, its eternal. We'll add it both to the cart and at the pivot. Friction is non-conservative, so it becomes part of the virtual work, $\delta\mathcal{W}$.
+
+Keeping it simple with just viscous friction, a drag $u_f = -\mu_c\dot{x}e_1$ on the cart proportional to $\dot{x}$, and a torque due to friction $\tau_f = -\mu_p\dot\theta$ at the pivot proportional to $\dot\theta$, where $\mu_c, \mu_p \ge 0$. The virtual work is then,
+
+$$
+\begin{align}
+  \int \delta\mathcal{W}\,dt &= \int \Bigg( \langle u\,e_1 - \mu_c\,\dot{x}\,e_1, \delta X_{c}\rangle - \mu_p\,\dot\theta\,\delta\theta \Bigg)dt \\
+  &= \int \Bigg( (u - \mu_c\,\dot{x})\,\delta x - \mu_p\,\dot\theta\,\delta\theta \Bigg)dt
+\end{align}
+$$
+
+rest of it pretty similar to the equations I hid above, so the final equations of motion turns out to
+
+$$
+\begin{align}
+  (M+m)\ddot{x} + m l\cos\theta\,\ddot{\theta} - m l\sin\theta\,\dot{\theta}^2 &= u - \mu_c\,\dot{x} \\
+  ml^2\,\ddot\theta + ml\cos\theta\,\ddot{x} + mgl\sin\theta &= -\mu_p\,\dot\theta
+\end{align}
+$$
+
+In the standard form friction gets its own term, $M\ddot{q} + C\dot{q} + D\dot{q} = G + Bu$, with $D = \text{diag}(\mu_c, \mu_p)$,
+
+$$
+\begin{equation}
+\begin{bmatrix}
+  M+m & ml\cos\theta \\
+  ml\cos\theta & ml^2
+\end{bmatrix} \begin{bmatrix}
+  \ddot{x} \\
+  \ddot{\theta} \end{bmatrix} + \begin{bmatrix} 0 & -ml\sin\theta\dot\theta \\ 0 & 0 \end{bmatrix} \begin{bmatrix}
+  \dot{x} \\ \dot{\theta} \end{bmatrix} + \begin{bmatrix} \mu_c & 0 \\ 0 & \mu_p \end{bmatrix} \begin{bmatrix}
+  \dot{x} \\ \dot{\theta} \end{bmatrix} = \begin{bmatrix}
+  0 \\ -mgl\sin\theta \end{bmatrix} + \begin{bmatrix}
+  1 \\ 0 \end{bmatrix} u
+\end{equation}
+$$
+
+<details>
+<summary>Quick Sanity Check</summary>
+
+Total energy of the system is $E = T + V$, i.e., $E =\tfrac{1}{2}\,\dot{q}^\top M(q)\,\dot{q} \;-\; mgl\cos\theta$. Quick side note, $G=-
+\frac{\partial}{\partial q}V$. Rate at with the Energy changes, i.e., $\frac{d}{dt}E$,
+
+$$
+\begin{equation}
+\frac{dE}{dt} = \dot{q}^\top M(q)\,\ddot{q} + \tfrac{1}{2}\dot{q}^\top \dot{M}(q)\,\dot{q} + \Big(\frac{\partial V}{\partial q}\Big)^{\!\top} \dot{q}
+\end{equation}
+$$
+
+But then, we know $M\ddot{q} = G + Bu - C\dot{q} - D\dot{q}$, so
+
+$$
+\begin{equation}
+\frac{dE}{dt} = \dot{q}^T(G + Bu - C\dot{q} - D\dot{q}) + \tfrac{1}{2}\dot{q}^\top \dot{M}(q)\,\dot{q} + \Big(\frac{\partial V}{\partial q}\Big)^{\!\top} \dot{q}
+\end{equation}
+$$
+
+and simplifies to,
+
+$$
+\begin{align}
+  \frac{dE}{dt} = \dot{q}^\top B u - \dot{q}^\top D\,\dot{q} + \tfrac{1}{2}\dot{q}^\top\big(\dot{M} - 2C\big)\dot{q}
+\end{align}
+$$
+
+and that last term is zero, because $\dot{M} - 2C$ is skew-symmetric and $v^\top S\,v = 0$ for any skew-symmetric $S$. So what is left is power in, minus power burnt,
+
+$$
+\begin{equation}
+\frac{dE}{dt} = \underbrace{\dot{q}^\top B u}_{\text{power in}} - \underbrace{\dot{q}^\top D\,\dot{q}}_{\text{friction loss}} = u\,\dot{x} - \mu_c\,\dot{x}^2 - \mu_p\,\dot\theta^2
+\end{equation}
+$$
+
+With no force applied, $u = 0$, the first term goes and the energy can only
+ever fall,
+
+$$
+\begin{equation}
+\frac{dE}{dt} = -\dot{q}^\top D\,\dot{q} = -\mu_c\,\dot{x}^2 - \mu_p\,\dot\theta^2 \leq 0
+\end{equation}
+$$
+
+and the sign is decided entirely by $D \succeq 0$.
+
+</details>
+
+## The Balancing Act
+
+Okay, now lets write up a simple controller to keep the pole upright. [Linear Quadratic Regulator](https://underactuated.mit.edu/lqr.html) (LQR), is an optimal formulation to find the control inputs for time invariant systems.
+
+For a linear system of the form $\dot{z} = Az + Bu$, the control input is given,
+
+$$
+\begin{equation}
+u^* = \arg\min_{u}\int_0^\infty (z^\top Q z + u^\top R u)\,dt
+\end{equation}
+$$
+
+where $Q \succeq 0$, $R \succ 0$, the solution for this optimal control turns to be,
+
+$u^* = -Kx$, where $K = R^{-1}B^\top S$ and $S$ is the solution to the algebraic Riccati equation (No way, I'm deriving this right now, 🤷‍♂️),
+
+$$
+\begin{equation}
+0 = A^\top S + S A - S B R^{-1}B^\top S + Q
+\end{equation}
+$$
+
+Before any of that though, we need the dynamics as a first-order system. With $z=\begin{bmatrix} x & \theta & \dot{x} & \dot{\theta} \end{bmatrix}^T$, invert the mass matrix and doing some algebraic magic,
+
+$$
+\begin{equation}
+\dot{z} = f(z, u) = \begin{bmatrix}
+\dot{x}\\[4pt]
+\dot{\theta}\\[4pt]
+\dfrac{u - \mu_c\dot{x} + ml\dot\theta^2\sin\theta + mg\sin\theta\cos\theta + \frac{\mu_p}{l}\dot\theta\cos\theta}{M + m\sin^2\theta}\\[10pt]
+\dfrac{-(M+m)g\sin\theta - ml\dot\theta^2\sin\theta\cos\theta + \mu_c\dot{x}\cos\theta - u\cos\theta - \frac{(M+m)\mu_p}{ml}\dot\theta}{l\left(M + m\sin^2\theta\right)}
+\end{bmatrix}
+\end{equation}
+$$
+
+That $M + m\sin^2\theta$ in the denominator never goes to zero, it just wanders between $M$ and $M+m$, so the mass matrix is always invertible and $f$ is well defined everywhere. No singular configurations to worry about, which is not something you get for free in general.
+
+Taking help of Brook [Taylor](https://en.wikipedia.org/wiki/Taylor_series), we can write, $f(z) \approx f(z_0) + \frac{\partial f}{\partial z}(z-z_0) + \frac{1}{2}\frac{\partial^2 f}{\partial z^2}(z-z_0)^2 + \dots $
+
+and only considering the first order approximation, the dynamics linearize to $\dot{\tilde{z}} = A\tilde{z} + Bu$, where $\tilde{z} = z - z_0$ is the deviation from the equilibrium, $A=\frac{\partial f}{\partial z}(z_0)$ and $B=\frac{\partial f}{\partial u}(z_0)$. About the equilibrium point $z_0 = [0, \pi, 0, 0]^T$ (i.e., the pole standing vertically up, cart at $x=0$), we have:
+
+$$
+\begin{equation}
+A = \begin{bmatrix}
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & \dfrac{mg}{M} & -\dfrac{\mu_c}{M} & -\dfrac{\mu_p}{Ml} \\[6pt]
+0 & \dfrac{(M+m)g}{Ml} & -\dfrac{\mu_c}{Ml} & -\dfrac{(M+m)\mu_p}{Mml^2}
+\end{bmatrix}, \qquad
+B = \begin{bmatrix} 0 \\ 0 \\ \dfrac{1}{M} \\ \dfrac{1}{Ml} \end{bmatrix}
+\end{equation}
+$$
+
+<CartPole
+  mode="lqr"
+  theta0={170}
+  width={50}
+  align="left"
+  cartDamping={0.0}
+  pivotDamping={0.0}
+  showFriction
+  caption="LQR balancing about upright. Drag the pole away and let go, or raise the effort penalty R until the controller becomes too polite to catch it. The friction sliders act on the plant only, the gain never knows about them."
+/>
+
+and $f(z_0) = 0$, which is the whole point of linearizing about an _equilibrium_ (although a bit "delulu" is that the term, I mean unstable). Worth keeping straight that the gain then multiplies $\tilde{z}$ and not $z$: the pole angle that goes into $u = -K\tilde{z}$ is $\varphi = \theta - \pi$, measured from upright, not $\theta$ measured from hanging. Going back to our imaginary frictionless world and solving the LQR with
+
+$$
+\begin{equation}
+A = \begin{bmatrix}
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & \dfrac{mg}{M} & 0 & 0 \\[6pt]
+0 & \dfrac{(M+m)g}{Ml} & 0 & 0
+\end{bmatrix}, \qquad
+B = \begin{bmatrix} 0 \\ 0 \\ \dfrac{1}{M} \\ \dfrac{1}{Ml} \end{bmatrix}
+\end{equation}
+$$
+
+There is no `scipy` in a browser, so we are solving it the blunt way, discretize at a fine step and iterate the Riccati recursion backwards until $P$ stops moving. Converges in a few thousand iterations, a couple of milliseconds, and it re-solves every time you change a parameter, so the gain under the simulation below is always the one being applied.
+
+<Callout type="note" title="Fun Fact">
+  Lets says we pick new $Q'=\alpha Q$ and $R'=\alpha R$, the cost functional
+  becomes $\int_0^\infty (\alpha x^T Q x + \alpha u^T R u ) dt = \alpha
+  \int_0^\infty (x^T Q x + u^T R u) dt$. So the optimal solution is the same for
+  the quadratic cost functional, what actually matters is the relative weights
+  of $Q$ and $R$.
+</Callout>
+
+<div className="clear-left" />
+
+### Control Performance
+
+There are different ways to control a system, but how do you tell if one is better than the other? There is no easy answer; it comes down to what you are trying to achieve with the controller.
+
+<MetricCards title="Performance Metrics">
+  <Metric icon="🎯" name="Region of attraction" short="how far can you push it">
+    How far from the setpoint can you take the system and still have it come
+    back to the origin?
+  </Metric>
+  <Metric icon="🎲" name="Noise" short="is what you measure real">
+    How stable is the system in the presence of noise? Is the measured state
+    correct? Is the applied force exact?
+  </Metric>
+  <Metric icon="🛡️" name="Robustness" short="is your model right">
+    How stable is the system in the presence of model uncertainties? Are the
+    model parameters correct? And what about the dynamics you never modelled at
+    all?
+  </Metric>
+  <Metric icon="⚡" name="Effort" short="what does it cost">
+    How much energy are you using to bring the state to origin?
+  </Metric>
+  <Metric icon="⏱️" name="Speed" short="how fast is it over">
+    How fast are you bringing the state to origin?
+  </Metric>
+  <Metric icon="🚧" name="Limits" short="what the hardware refuses">
+    Actuator limits (the motor driving the cart doesn't have infinite force,
+    obviously), state constraints (the cart can only move so much), force rates
+    (I can't ask for 100N and then -100N the next instant!), etc.
+  </Metric>
+  <Metric icon="⏳" name="Latency" short="everything arrives late">
+    When you apply a force, it might take a moment to reach the motor, and how
+    soon did the sensor tell you what just happened at the pivot?
+  </Metric>
+  <Metric icon="💻" name="Compute" short="what you get to run it on">
+    Do you have a Raspberry Pi or a Nvidia Jetson? How much memory do you have?
+    How fast can you run the controller, 10Hz or 1000Hz?
+  </Metric>
+</MetricCards>
+
+Ah! Lost enthu to move forward for now, but plan to revisit to add cool visuals to see how the ROA is changing with various factors, like model uncertainties, costs, limits and the whole shebang. I'm calling it a day.
+
+---
+
+P.S.: ... LLMs can generate this page in a matter of seconds.
