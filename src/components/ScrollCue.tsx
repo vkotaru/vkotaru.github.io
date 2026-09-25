@@ -24,7 +24,7 @@ export default function ScrollCue()
 
   return (
     <a
-      href="#research"
+      href="#publications"
       aria-label="Scroll to content"
       className={`absolute bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-1.5
                   text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary

@@ -34,3 +34,8 @@ next-env.d.ts
 
 # Editors
 .vscode/
+# Video masters. Originals stay local: kite_draft3.mov is a 4.3 GB ProRes
+# master, and the site only ever ships short H.264 cuts of it from public/.
+/media/*.mov
+/media/*.MOV
+/media/*.mp4

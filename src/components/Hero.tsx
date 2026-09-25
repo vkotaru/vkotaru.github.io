@@ -1,37 +1,55 @@
 import Image from 'next/image'
-import ScrollCue from '@/components/ScrollCue'
 import Link from 'next/link'
+import Vehicle from '@/components/Vehicle'
+import Showcase from '@/components/Showcase'
+import ScrollCue from '@/components/ScrollCue'
 
+/**
+ * The front page: who I am on the left, what I have built on the right.
+ *
+ * The panels are deliberately small. Blown up to fill their column they only
+ * advertised the source footage, most of which is 200px wide -- at this size
+ * the grid reads as a contact sheet and the softness stops showing.
+ *
+ * The old hero said "Software Engineer, Motion Control" and nothing else;
+ * nobody landing here could tell it was robotics.
+ */
 export default function Hero()
 {
   return (
-    <section id="about" className="relative min-h-screen flex items-center pt-16 pb-12 px-6 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      <div className="max-w-6xl mx-auto w-full">
-        <div className="grid md:grid-cols-[300px_1fr] gap-8 items-start">
-          {/* Profile Image */}
-          <div className="flex items-center justify-center md:justify-start h-full">
-            <div className="relative w-64 h-64 md:w-full md:h-auto md:aspect-square rounded-full overflow-hidden shadow-2xl ring-4 ring-white/50 dark:ring-slate-700/50">
-              <Image
-                src="/media/pkMarch2024.png"
-                alt="Prasanth Kotaru"
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-          </div>
+    <section id="about" className="relative min-h-screen flex items-center pt-20 pb-20 lg:pb-24 px-6 sm:px-8 xl:px-12 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      <div className="w-full max-w-[1700px] mx-auto">
+        <div className="grid lg:grid-cols-[20rem_1fr] xl:grid-cols-[minmax(300px,26rem)_1fr] gap-10 lg:gap-8 xl:gap-12 items-center">
 
-          {/* All Content on Right */}
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-3">
-              Prasanth Kotaru
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
-              Software Engineer, Motion Control, Waymo LLC
-            </p>
+          {/* Left: who */}
+          <div>
+            <div className="flex flex-col sm:flex-row lg:flex-col items-center sm:items-start gap-5 text-center sm:text-left">
+              <div className="relative w-28 h-28 sm:w-36 sm:h-36 shrink-0 rounded-full overflow-hidden shadow-2xl ring-4 ring-white/50 dark:ring-slate-700/50">
+                <Image
+                  src="/media/pkMarch2024-640.jpg"
+                  alt="Prasanth Kotaru"
+                  fill
+                  sizes="144px"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+
+              <div className="min-w-0">
+                {/* Sized off the viewport rather than the breakpoint: the column is a
+                    third of the window, so a fixed 48px name wrapped between 1280
+                    and 1400 and cleared 1440 by two pixels. */}
+                <h1 className="text-4xl sm:text-5xl lg:text-[clamp(2.25rem,3vw,2.75rem)] font-bold text-gray-900 dark:text-white mb-2">
+                  Prasanth Kotaru
+                </h1>
+                <p className="text-xl text-gray-600 dark:text-gray-400">
+                  Roboticist
+                </p>
+              </div>
+            </div>
 
             {/* Social Links */}
-            <div className="flex gap-3 justify-center md:justify-start mb-6">
+            <div className="flex gap-3 justify-center sm:justify-start mt-5">
               <a
                 href="https://github.com/vkotaru"
                 target="_blank"
@@ -67,11 +85,29 @@ export default function Hero()
               </a>
             </div>
 
+            {/* Experience. The marks are generic vehicle silhouettes, not
+                company logos -- see `Vehicle`. */}
+            <div className="mt-5 p-4 bg-white/50 dark:bg-slate-800/50 rounded-lg backdrop-blur-sm">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Experience</h2>
+              <ul className="space-y-1 text-sm">
+                {([
+                  ['robotaxi', 'Waymo'],
+                  ['car', 'Tesla'],
+                  ['tractor', 'Monarch Tractor'],
+                ] as const).map(([kind, name]) => (
+                  <li key={name} className="flex items-center gap-2.5 text-gray-900 dark:text-white">
+                    <Vehicle kind={kind} className="h-6 w-6 shrink-0 text-gray-500 dark:text-gray-400" />
+                    {name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             {/* Education */}
-            <div className="mt-6 p-4 bg-white/50 dark:bg-slate-800/50 rounded-lg backdrop-blur-sm">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Education</h2>
-              <div className="space-y-2 text-sm">
-                <div className="bg-white/80 dark:bg-slate-800/80 p-3 rounded-lg">
+            <div className="mt-3 p-4 bg-white/50 dark:bg-slate-800/50 rounded-lg backdrop-blur-sm">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Education</h2>
+              <div className="space-y-1.5 text-sm">
+                <div className="bg-white/80 dark:bg-slate-800/80 px-3 py-2 rounded-lg">
                   <p className="text-gray-900 dark:text-white">
                     Ph.D., Mechanical Engineering, University of California, Berkeley, CA, 2022
                   </p>
@@ -80,20 +116,25 @@ export default function Hero()
                   </p>
                 </div>
 
-                <div className="bg-white/50 dark:bg-slate-800/50 p-2 rounded">
+                <div className="bg-white/50 dark:bg-slate-800/50 px-3 py-2 rounded">
                   <p className="text-gray-900 dark:text-white">
                     M.S., Mechanical Engineering, Carnegie Mellon University, Pittsburgh, PA, 2017
                   </p>
                 </div>
 
-                <div className="bg-white/50 dark:bg-slate-800/50 p-2 rounded">
+                <div className="bg-white/50 dark:bg-slate-800/50 px-3 py-2 rounded">
                   <p className="text-gray-900 dark:text-white">
                     B.Tech., Mechanical Engineering, Indian Institute of Technology, Madras, India, 2014
                   </p>
                 </div>
               </div>
             </div>
+
           </div>
+
+          {/* Right: what */}
+          <Showcase />
+
         </div>
       </div>
 

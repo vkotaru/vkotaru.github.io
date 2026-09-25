@@ -260,3 +260,17 @@ html {
 .dark .draft-block :is(p, li) {
   color: #fcd34d;
 }
+
+/* The planner tile's chosen path, redrawn as if the solution were streaming in.
+   Slow on purpose -- it sits beside looping video and should not compete. */
+@keyframes plan-sweep {
+  to { stroke-dashoffset: -72; }
+}
+
+.plan-sweep {
+  animation: plan-sweep 3.5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plan-sweep { animation: none; }
+}
